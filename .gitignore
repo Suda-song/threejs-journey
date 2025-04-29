@@ -1,0 +1,20 @@
+# 依赖目录
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# 构建输出
+/dist
+
+# 本地环境文件
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 编辑器目录和文件
+.idea/
+.vscode/
+*.swp
+*.swo
