@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import gsap from 'gsap';
+import './style.css';
 
 /**
  * cursor
@@ -16,7 +17,13 @@ window.addEventListener('mousemove', (event) => {
 const canvas = document.querySelector('canvas.webgl');
 /*Scene*/
 const scene = new THREE.Scene();
-
+/**
+ * 用点来创建面
+ */
+// const positionArray = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
+// const positionAttribute = new THREE.BufferAttribute(positionArray, 3);
+// const geometry = new THREE.BufferGeometry();
+// geometry.setAttribute('position', positionAttribute);
 /*Geometry*/
 // const group = new THREE.Group();
 // scene.add(group);
@@ -57,9 +64,35 @@ scene.add(axesHelper);
 
 /*camera 透视摄影机：视野范围和焦距*/
 const sizes = {
-  width: 800,
-  height: 600,
+  width: window.innerWidth,
+  height: window.innerHeight,
 };
+window.addEventListener('resize', () => {
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
+  camera.aspect = sizes.width / sizes.height;
+  camera.updateProjectionMatrix();
+  renderer.setSize(sizes.width, sizes.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
+window.addEventListener('dblclick', () => {
+  const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+  if (!fullscreenElement) {
+    if (canvas.requestFullscreen) {
+      canvas.requestFullscreen();
+    } else if (canvas.webkitRequestFullscreen) {
+      canvas.webkitRequestFullscreen();
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+});
+
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100); //75度视野范围，宽高比,近景，远景
 // const aspectRatio = sizes.width / sizes.height;
 // const camera = new THREE.OrthographicCamera(-1 * aspectRatio, 1 * aspectRatio, 1, -1, 0.1, 100); //左右上下，近景，远景
@@ -79,7 +112,7 @@ const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
 });
 renderer.setSize(sizes.width, sizes.height);
-
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 // renderer.render(scene, camera);
 
 /*Animations*/
