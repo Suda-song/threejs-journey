@@ -2,6 +2,34 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import './style.css';
 
+/** 
+ * 图片处理
+*/
+// const image = new Image()
+// const texture = new THREE.Texture(image)
+// image.onload = () => {
+//   texture.needsUpdate = true
+// }
+const loadingManager = new THREE.LoadingManager()
+loadingManager.onStart = () => {
+  console.log('start')
+}
+
+loadingManager.onLoad = () => {
+  console.log('load')
+}
+loadingManager.onProgress = () => {
+  console.log('Progress')
+}
+loadingManager.onError = () => {
+  console.log('error')
+}
+const textureloader = new THREE.TextureLoader(loadingManager)
+const colortexture = textureloader.load('path/to/image')
+const alphatexture = textureloader.load('path/to/image')
+colortexture.wrapS = THREE.MirroredRepeatWrapping //对称重复
+colortexture.offset.x = 0.5
+colortexture.center.x = 0.5
 /**
  * cursor
  */
@@ -34,6 +62,7 @@ const scene = new THREE.Scene();
 // cubel.position.x = -2;
 const geometry = new THREE.BoxGeometry(1, 1, 1, 5, 5, 5);
 const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+// const material = new THREE.MeshBasicMaterial({ map: texture }); //图片处理
 const mesh = new THREE.Mesh(geometry, material);
 
 // const cubel2 = new THREE.Mesh(
